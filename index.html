@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SP · Tu dinero claro</title>
+<meta name="description" content="SP · Sistema Personal: registra tus gastos en segundos, mira cuánto te queda del mes, tus deudas, metas y reportes. Tus datos quedan en tu propio Google Drive.">
+<style>
+  :root { --oro: #F2CA50; --oro2: #DFB743; --fondo: #0a0e17; --card: #111724; --linea: rgba(255,255,255,.08); --txt: #e2e8f0; --suave: #a5b0c2; --verde: #6ee7b7; --rojo: #fca5a5; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Inter, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; background: var(--fondo); color: var(--txt); line-height: 1.5; }
+  a { color: var(--oro); }
+  .in { max-width: 560px; margin: 0 auto; padding: 0 18px; }
+  header { padding: 18px 0 6px; }
+  .marca { font-size: 12px; letter-spacing: .14em; font-weight: 800; color: var(--oro); }
+  h1 { font-size: 30px; line-height: 36px; margin: 16px 0 10px; color: #fff; }
+  h1 b { color: var(--oro); }
+  .sub { color: var(--suave); font-size: 15.5px; }
+  .video { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(242,202,80,.45); color: var(--oro); font-weight: 700; text-decoration: none; }
+  .card { margin-top: 22px; padding: 20px; border-radius: 20px; background: linear-gradient(180deg, rgba(212,175,55,.08), var(--card) 45%); border: 1px solid rgba(212,175,55,.35); }
+  .etq { font-size: 11px; letter-spacing: .12em; font-weight: 800; color: var(--oro); }
+  /* Tarjeta de miembro (diseño 144b, estilo C) */
+  .memb { position: relative; height: 150px; border-radius: 16px; padding: 14px 16px; background: linear-gradient(135deg, #2a2210, #d4af37 48%, #7a5d14 52%, #1c1608); color: #fff; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,.4); }
+  .memb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.18) 45%, transparent 60%); pointer-events: none; }
+  .memb .t { font-size: 10px; letter-spacing: .2em; font-weight: 800; color: #fff8dc; }
+  .memb .gen { font-family: Georgia, "Times New Roman", serif; font-size: 34px; font-weight: 700; letter-spacing: .06em; margin-top: 20px; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
+  .memb .n { position: absolute; bottom: 12px; left: 16px; font-size: 10.5px; letter-spacing: .14em; color: #fff8dc; }
+  .paga { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; color: var(--suave); }
+  .paga i { font-style: normal; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; }
+  .paga .y { background: #742284; color: #fff; } .paga .p { background: #00b4c5; color: #04232a; }
+  .pausa { margin-top: 10px; font-size: 14px; color: #fde68a; }
+  /* Después de GEN VI: casillas mensual y anual (diseño 144b, pantalla 3) */
+  .elige { font-size: 18px; font-weight: 700; color: #fff; }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .pl { padding: 14px 10px; border-radius: 14px; border: 1px solid rgba(255,255,255,.12); background: transparent; text-align: center; color: var(--txt); font: inherit; cursor: pointer; }
+  .pl.sel { border-color: var(--oro); background: rgba(242,202,80,.1); }
+  .pl small { display: block; font-size: 10.5px; letter-spacing: .1em; color: var(--suave); font-weight: 800; }
+  .pl b { display: block; font-size: 24px; color: #fff; margin-top: 4px; white-space: nowrap; }
+  .pl em { font-style: normal; font-size: 11px; color: var(--suave); }
+  .pl .ah { display: inline-block; margin-top: 6px; padding: 2px 8px; border-radius: 99px; font-size: 10.5px; font-weight: 800; color: var(--verde); border: 1px solid rgba(110,231,183,.45); }
+  .precio { font-size: 44px; font-weight: 800; color: #fff; margin-top: 4px; }
+  .precio small { font-size: 15px; font-weight: 600; color: var(--suave); margin-left: 6px; }
+  ul.inc { list-style: none; margin-top: 14px; display: grid; gap: 8px; }
+  ul.inc li { display: flex; gap: 10px; font-size: 14.5px; }
+  ul.inc li::before { content: "✓"; color: var(--verde); font-weight: 800; }
+  h2 { font-size: 20px; color: #fff; margin: 30px 0 10px; }
+  .func { display: grid; gap: 10px; }
+  .func div { padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--linea); font-size: 14px; color: var(--suave); }
+  .func b { display: block; color: #fff; font-size: 14.5px; }
+  form { margin-top: 10px; display: grid; gap: 14px; }
+  label { font-size: 13px; font-weight: 700; color: #fff; }
+  input[type=text], input[type=email], input[type=tel] { width: 100%; height: 50px; margin-top: 6px; padding: 0 14px; border-radius: 12px; border: 1px solid #2a3346; background: #0d121c; color: #fff; font-size: 16px; }
+  input:focus { outline: 2px solid var(--oro); outline-offset: 1px; }
+  .nota { font-size: 12.5px; color: #fde68a; margin-top: 6px; }
+  .acepto { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; font-weight: 500; color: var(--suave); }
+  .acepto input { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: var(--oro); }
+  .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  button.oro { height: 54px; border: 0; border-radius: 14px; font-size: 16px; font-weight: 800; color: #2a2000; background: linear-gradient(90deg, var(--oro2), #F2CE5E, #C99E2A); cursor: pointer; }
+  button.oro:disabled { opacity: .6; cursor: default; }
+  .err { padding: 12px 14px; border-radius: 12px; background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.45); color: var(--rojo); font-size: 14px; }
+  .chico { font-size: 12.5px; color: var(--suave); text-align: center; }
+  .ok { text-align: center; }
+  .ok .ic { width: 64px; height: 64px; margin: 6px auto 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: #053; background: var(--verde); }
+  ol.pasos { text-align: left; margin: 14px 0 0 20px; display: grid; gap: 8px; font-size: 14.5px; }
+  .wsp { display: inline-block; margin-top: 16px; padding: 12px 18px; border-radius: 12px; background: #25D366; color: #052e16; font-weight: 800; text-decoration: none; }
+  details { margin-top: 10px; padding: 12px 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--linea); }
+  summary { font-weight: 700; color: #fff; cursor: pointer; }
+  details p { margin-top: 8px; color: var(--suave); font-size: 14px; }
+  footer { margin: 34px 0 0; padding: 22px 0 30px; border-top: 1px solid var(--linea); font-size: 12.5px; color: var(--suave); display: grid; gap: 8px; }
+  footer nav { display: flex; gap: 16px; flex-wrap: wrap; }
+  .pedc { display: inline-block; margin: 8px 0 12px; padding: 4px 10px; border-radius: 99px; font-size: 12.5px; font-weight: 800; letter-spacing: .04em; color: #fde68a; background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.45); font-family: ui-monospace, Menlo, Consolas, monospace; }
+  .pago { background: #fff; color: #1e2328; border-radius: 16px; padding: 16px; margin-top: 4px; }
+  .pago small { display: block; font-size: 12px; color: #6b7280; }
+  .pago .m { font-size: 32px; font-weight: 800; margin: 2px 0 8px; }
+  .pago img { width: 200px; height: 200px; object-fit: contain; display: block; margin: 0 auto; border-radius: 8px; }
+  .pago .tit { font-size: 14px; margin-top: 8px; }
+  .pago .guardar { display: inline-block; margin-top: 10px; padding: 9px 14px; border-radius: 10px; border: 1px solid #d1d5db; font-size: 13px; font-weight: 700; color: #1e2328; text-decoration: none; }
+  .pago .tip { font-size: 12px; color: #6b7280; margin-top: 6px; }
+  .pago .sinqr { font-size: 13px; color: #6b7280; margin: 6px 0; }
+  .wsp.ancho { display: block; text-align: center; }
+  .oculto { display: none !important; }
+</style>
+</head>
+<body>
+<div class="in">
+  <header style="display:flex;justify-content:space-between;align-items:center"><div class="marca">SP · SISTEMA PERSONAL</div><a href="entrar.html" style="font-size:13px;font-weight:700;text-decoration:none;padding:7px 12px;border-radius:10px;border:1px solid rgba(242,202,80,.45)">Entrar a mi App</a></header>
+  <main>
+    <h1>Tu dinero claro, en tu <b>propio Google Drive</b></h1>
+    <p class="sub">Registra un gasto en segundos, mira cuánto te queda del mes, tus deudas, metas y reportes. Desde tu celular o tu computadora.</p>
+    
+
+    <section class="card" aria-labelledby="plan">
+      <div class="oculto" id="planes"><div class="elige">Elige tu plan</div>
+        <div class="dos"><button type="button" class="pl" data-plan="MENSUAL"><small>MENSUAL</small><b id="pMes">S/ 12.90</b><em>al mes</em></button>
+        <button type="button" class="pl sel" data-plan="ANUAL"><small>ANUAL</small><b id="pAnio">S/ 129</b><em>al año</em><br><span class="ah">2 meses gratis</span></button></div></div>
+      <div class="memb" id="plan"><div class="t">SP · MIEMBRO</div><div class="gen">MIEMBRO</div><div class="n">GÉNESIS · DE POR VIDA</div></div>
+      <div style="margin-top:10px;font-size:15px;color:#cbd5e1">Acceso <b style="color:#fff">de por vida</b> · pago único. El precio de hoy lo ves al pedir tu acceso.</div>
+      <div class="paga">Pagas con <i class="y">Yape</i><i class="p">Plin</i></div>
+      
+      <ul class="inc">
+        <li id="incApp">Toda la App, sin mensualidades</li>
+        <li>Funciona en tu celular y en tu computadora</li>
+        <li>Actualizaciones y mejoras incluidas</li>
+        <li>Tus datos en tu propio Google Drive</li>
+      </ul>
+    </section>
+
+    <h2>Qué puedes hacer</h2>
+    <div class="func">
+      <div><b>Registrar en segundos</b>Gastos, ingresos, transferencias y cambio de dólares. También desde la foto de tu comprobante.</div>
+      <div><b>Saber cuánto te queda</b>Tu plan del mes con la regla 50/30/20 y tus presupuestos.</div>
+      <div><b>Tarjetas y deudas al día</b>Fechas de pago y corte, cuotas, saldo en soles y dólares, y cuánto te cuesta pagar solo el mínimo.</div>
+      <div><b>Metas y reportes</b>Tu balance, flujo, metas y estadísticas por mes y por año.</div>
+      <div><b>Avisos por correo</b>Antes de pagar tu tarjeta, tus gastos fijos o cuando te pasas del presupuesto.</div>
+      <div><b>Asistente sin inteligencia artificial</b>Responde preguntas sobre tus números y sobre cómo usar la App. No envía tus datos a nadie.</div>
+    </div>
+
+    <h2 id="pide">Pide tu acceso</h2>
+    <div class="card" style="margin-top:6px">
+      <p style="color:#cbd5e1;font-size:14.5px">Llenas tus datos (2 minutos), pagas con Yape o Plin y te mandamos el link de la App a tu Gmail.</p>
+      <a class="oro" href="https://script.google.com/macros/s/AKfycbyDY7e6pd_-rVcpRUT7Uzsd-2z3gxoo5sZZxbMxWU5VzJvTRqtM34zCwa3QulXBTQ_jfA/exec#pide" style="display:flex;align-items:center;justify-content:center;width:100%;margin-top:14px;text-decoration:none;height:54px;border-radius:14px;font-weight:800;color:#2a2000;background:linear-gradient(90deg,#DFB743,#F2CE5E,#C99E2A)">Pedir mi acceso →</a>
+      <p class="chico" style="margin-top:8px">Se abre el formulario seguro de SP</p>
+    </div>
+
+    <h2>Preguntas frecuentes</h2>
+    <details id="faqGen"><summary>¿Qué es GEN <span class="genQ">I</span>?</summary><p id="genR">GEN viene de Génesis: los primeros miembros de SP, con acceso de por vida. Tu GEN se queda contigo para siempre.</p></details>
+    <details><summary>¿Cómo entro a la App?</summary><p>Con tu Gmail, desde el link que te enviamos al confirmar tu pago. La primera vez, Google te mostrará un aviso porque SP es una app nueva: te enviamos los pasos junto con tu acceso.</p></details>
+    <details><summary>¿Necesito una cuenta de Google?</summary><p>Sí. La App funciona con tu Gmail y guarda tus datos en tu propio Google Drive.</p></details>
+    <details><summary>¿Alguien más ve mis datos?</summary><p>No. Tus finanzas quedan en tu Google Drive; nosotros no las vemos. Solo guardamos tu nombre, correo y WhatsApp para darte acceso.</p></details>
+    <details><summary>¿Hay mensualidades?</summary><p id="faqMes">No. Es un pago único, de por vida, con las actualizaciones y mejoras incluidas.</p></details>
+    <details><summary>¿Usa inteligencia artificial?</summary><p>No. Su asistente responde con tus números y explica cómo usar la App, sin enviar tus datos a ninguna empresa.</p></details>
+    <details><summary>¿Puedo pedir un reembolso?</summary><p>No hay reembolsos por cambio de opinión. Si la App falla y no lo resolvemos, te devolvemos tu pago. Detalles en los <a href="terminos.html" target="_blank" rel="noopener">términos</a>.</p></details>
+  </main>
+  <footer>
+    <div><b style="color:#fff">SP · Sistema Personal</b> · Contacto: <a href="mailto:sistemapersonal.app@gmail.com">sistemapersonal.app@gmail.com</a><span id="pieWsp"></span></div>
+    <div>SP no está afiliado a ningún banco. Los nombres y colores de bancos y billeteras pertenecen a sus dueños.</div>
+    <div>Esta página no usa cookies de seguimiento ni analítica.</div>
+    <nav><a href="terminos.html" target="_blank" rel="noopener">Términos y condiciones</a><a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a></nav>
+    <div>© 2026 SP · Sistema Personal. Todos los derechos reservados.</div>
+  </footer>
+</div>
+
+</body>
+</html>
