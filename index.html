@@ -260,7 +260,7 @@ footer a { color: inherit; }
 </head>
 <body>
 <header class="barra">
-  <a class="marca" href="#">SP</a>
+  <a class="marca" href="#arriba">SP</a>
   <nav><a href="#anota">Qué hace</a><a href="#precios">Precio</a><a href="#preguntas">Preguntas</a><a class="e" href="entrar.html">Entrar a mi App</a><a class="ir" href="#precios">Quiero mi acceso</a></nav>
 </header>
 
@@ -405,6 +405,13 @@ Almuerzo 25</textarea>
 <script data-sp="vida">
 (function () {
   var rm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Links internos (#precios, #pide…): bajan a su sección. Con , dentro de SP WEB (marco de Google) abrían la dirección del marco y salía en blanco
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[href^="#"]'); if (!a) return;
+    var id = a.getAttribute("href").slice(1), d = document.getElementById(id); ev.preventDefault();
+    if (id === "arriba") window.scrollTo({ top: 0, behavior: rm ? "auto" : "smooth" });
+    else if (d) d.scrollIntoView({ behavior: rm ? "auto" : "smooth", block: "start" });
+  });
   // Entrada de cada sección: una sola vez, al aparecer en pantalla
   var els = document.querySelectorAll("[data-e]");
   if (!("IntersectionObserver" in window) || rm) { Array.prototype.forEach.call(els, function (e) { e.classList.add("visto"); }); }
