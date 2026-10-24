@@ -30,6 +30,16 @@
   .paga i { font-style: normal; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; }
   .paga .y { background: #742284; color: #fff; } .paga .p { background: #00b4c5; color: #04232a; }
   .pausa { margin-top: 10px; font-size: 14px; color: #fde68a; }
+  /* Diseño 150 v2: elegir Yape o Plin, o tarjeta (Hotmart) */
+  .como { font-size: 11px; letter-spacing: .12em; font-weight: 800; color: #64748b; margin: 14px 2px 0; }
+  .bpago { display: block; width: 100%; margin-top: 10px; padding: 13px 12px; border: 0; border-radius: 12px; font: inherit; font-size: 14.5px; font-weight: 800; text-align: center; cursor: pointer; text-decoration: none; }
+  .bpago span { font-weight: 600; opacity: .8; }
+  .bpago.y { background: #742284; color: #fff; } .bpago.t { background: #fff; color: #111; } .bpago.t span { color: #555; opacity: 1; }
+  .bnota { font-size: 12.5px; color: var(--suave); text-align: center; margin-top: 6px; }
+  .tj { margin-top: 12px; padding: 14px; border-radius: 14px; background: #0a0e17; border: 1px solid rgba(242,202,80,.35); }
+  .tj p { font-size: 13.5px; color: var(--suave); }
+  .tj p b { color: #fff; }
+  a.oro { display: flex; align-items: center; justify-content: center; height: 54px; margin-top: 12px; border-radius: 14px; font-size: 16px; font-weight: 800; color: #2a2000; background: linear-gradient(90deg, var(--oro2), #F2CE5E, #C99E2A); text-decoration: none; }
   /* Después de GEN VI: casillas mensual y anual (diseño 144b, pantalla 3) */
   .elige { font-size: 18px; font-weight: 700; color: #fff; }
   .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
@@ -96,8 +106,8 @@
         <button type="button" class="pl sel" data-plan="ANUAL"><small>ANUAL</small><b id="pAnio">S/ 129</b><em>al año</em><br><span class="ah">2 meses gratis</span></button></div></div>
       <div class="memb" id="plan"><div class="t">SP · MIEMBRO</div><div class="gen">MIEMBRO</div><div class="n">GÉNESIS · DE POR VIDA</div></div>
       <div style="margin-top:10px;font-size:15px;color:#cbd5e1">Acceso <b style="color:#fff">de por vida</b> · pago único. El precio de hoy lo ves al pedir tu acceso.</div>
-      <div class="paga">Pagas con <i class="y">Yape</i><i class="p">Plin</i></div>
-      
+      <div class="paga" id="paga">Pagas con <i class="y">Yape</i><i class="p">Plin</i></div>
+            
       <ul class="inc">
         <li id="incApp">Toda la App, sin mensualidades</li>
         <li>Funciona en tu celular y en tu computadora</li>
@@ -130,7 +140,7 @@
     <details><summary>¿Alguien más ve mis datos?</summary><p>No. Tus finanzas quedan en tu Google Drive; nosotros no las vemos. Solo guardamos tu nombre, correo y WhatsApp para darte acceso.</p></details>
     <details><summary>¿Hay mensualidades?</summary><p id="faqMes">No. Es un pago único, de por vida, con las actualizaciones y mejoras incluidas.</p></details>
     <details><summary>¿Usa inteligencia artificial?</summary><p>No. Su asistente responde con tus números y explica cómo usar la App, sin enviar tus datos a ninguna empresa.</p></details>
-    <details><summary>¿Puedo pedir un reembolso?</summary><p>No hay reembolsos por cambio de opinión. Si la App falla y no lo resolvemos, te devolvemos tu pago. Detalles en los <a href="terminos.html" target="_blank" rel="noopener">términos</a>.</p></details>
+    <details><summary>¿Puedo pedir un reembolso?</summary><p>Con Yape o Plin no hay reembolsos por cambio de opinión. Si pagaste con tarjeta por Hotmart, tienes 7 días para pedirlo en Hotmart. Si la App falla y no lo resolvemos, te devolvemos tu pago. Detalles en los <a href="terminos.html" target="_blank" rel="noopener">términos</a>.</p></details>
   </main>
   <footer>
     <div><b style="color:#fff">SP · Sistema Personal</b> · Contacto: <a href="mailto:sistemapersonal.app@gmail.com">sistemapersonal.app@gmail.com</a><span id="pieWsp"></span></div>
