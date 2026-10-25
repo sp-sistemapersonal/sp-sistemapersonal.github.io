@@ -259,6 +259,9 @@ a { color: inherit; }
 .ckPed { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fde68a; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
 .ckPed #okNom { color: #fff; }
 .ck .wsp { border-radius: 999px; }
+.ckVolver { display: block; width: 100%; margin-top: 14px; padding: 12px; border: 1px dashed #3f3f46; border-radius: 999px; background: transparent; color: #a1a1aa; font: 14px "Onest", sans-serif; cursor: pointer; }
+.ckVolver b { color: #f2ca50; font-weight: 600; }
+.ckVolver.oculto { display: none; }
 .form { display: grid; gap: 14px; margin-top: 16px; }
 .form label { display: block; font-size: 14px; color: #a5b0c2; }
 .acepto { display: flex !important; gap: 10px; align-items: flex-start; font-size: 14px; }
@@ -596,6 +599,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       </div>
       <a class="wsp oculto" id="okWsp" href="#" target="_blank" rel="noopener">Ya pagué · enviar captura</a>
       <p class="chico"><b>Guarda el QR o toma captura de esta pantalla.</b> Cuando confirmemos tu pago te mandamos el link de la App a <b id="okCorreo"></b> (8 a. m. a 10 p. m.).</p>
+      <button type="button" class="ckVolver soloTarjeta oculto" id="aTarjeta">¿Preferías tarjeta? <b>Pagar con tarjeta (Hotmart)<span class="precioVivo" id="aTarjetaP"> · S/ 59</span></b></button>
     </div>
   </div>
 </div></section>
@@ -743,7 +747,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       $("precioTxt").textContent = "pago único con Yape o Plin"; $("precioTxt").style.display = "block"; $("precioTxt").style.marginLeft = "0"; $("precioTxt").style.marginTop = "14px";
       $("yPrecio").textContent = r.moneda + " " + r.precio;
       $("bYape").lastElementChild.textContent = dif > 0 ? "· " + r.moneda + " " + dif + " menos" : "";
-      $("tPrecio").textContent = tP; $("tjPrecio").textContent = " · " + tP; $("ckPT").textContent = tP;
+      $("tPrecio").textContent = tP; $("tjPrecio").textContent = " · " + tP; $("ckPT").textContent = tP; $("aTarjetaP").textContent = " · " + tP;
     }
     boton();
     if (r.whatsapp) { $("pieWsp").innerHTML = '<a target="_blank" rel="noopener">WhatsApp</a>'; $("pieWsp").firstChild.href = wa("Hola, tengo una consulta sobre SP."); }
@@ -776,6 +780,11 @@ footer a { color: inherit; overflow-wrap: anywhere; }
   $("bTarjeta").addEventListener("click", function () {
     irAlCuadro("tarjeta");
     $("pide").scrollIntoView({ behavior: window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  });
+  // Eligió Yape por error: vuelve al formulario con Tarjeta elegida y sus datos ya escritos (el pedido de Yape queda PENDIENTE y no se cobra)
+  $("aTarjeta").addEventListener("click", function () {
+    $("vOk").classList.add("oculto"); $("vForm").classList.remove("oculto"); $("ck").setAttribute("data-paso", "1");
+    medio("tarjeta"); $("pide").scrollIntoView({ behavior: "auto", block: "start" });
   });
   try { var gm0 = localStorage.getItem("sp_gmail"); if (gm0 && !$("correo").value) $("correo").value = gm0; } catch (x) {}
   $("tjIr").addEventListener("click", function (e) {
