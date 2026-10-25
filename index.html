@@ -231,18 +231,43 @@ a { color: inherit; }
 .leyenda div.on { opacity: 1; }
 .leyenda i { width: 12px; height: 12px; border-radius: 4px; }
 .leyenda b { color: #eef1f6; margin-left: 6px; font-variant-numeric: tabular-nums; }
-.dlg { padding: 28px; background: #0a0e17; border-radius: 0; box-shadow: 0 0 0 1px rgba(242,202,80,.25); }
-[data-tema="claro"] .dlg { border-radius: 16px; }
-.dlg h3 { font-size: 22px; font-weight: 700; color: #fff; }
+/* Diseño 172b: cuadro de pago propio (resumen, pasos, datos, Yape o tarjeta, y el QR en el mismo cuadro); oscuro en los dos temas */
+.ck { padding: 24px; background: #0a0a0a; border-radius: 18px; box-shadow: inset 0 0 0 1px rgba(242,202,80,.3); font-size: 15px; }
+.ckSum { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 14px; align-items: center; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.ckSum:has(.ckGen.oculto) { grid-template-columns: minmax(0,1fr); }
+.ckGen { width: 74px; aspect-ratio: 1.586; border-radius: 8px; background: linear-gradient(135deg, #3a2c0c 0%, #d9ad3f 38%, #f6dc8c 50%, #b8862a 62%, #2a1f07 100%); color: #fffaf0; font: 800 15px/1.1 "Unbounded", sans-serif; padding: 6px 8px; }
+.ckGen small { display: block; font: 700 6px "Onest", sans-serif; letter-spacing: .14em; margin-bottom: 4px; }
+.ckQue b { display: block; font-size: 16px; color: #fff; }
+.ckQue > span { color: #a1a1aa; font-size: 13px; }
+.nw { white-space: nowrap; }
+.ckPasos { list-style: none; display: flex; gap: 6px; margin: 16px 0 18px; padding: 0; counter-reset: p; }
+.ckPasos li { flex: 1; counter-increment: p; font-size: 12px; color: #71717a; padding-top: 8px; border-top: 3px solid #27272a; }
+.ckPasos li::before { content: counter(p) " · "; }
+.ckPasos li.on, .ck[data-paso="3"] .ckPasos li.p3 { color: #f2ca50; border-color: #f2ca50; }
+.ckMed { border: 0; margin: 2px 0 0; padding: 0; display: grid; gap: 8px; min-width: 0; }
+.ckMed legend { padding: 0; margin-bottom: 8px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #a5b0c2; }
+.ckMed .m { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 14px; border: 1px solid #2b2b2e; cursor: pointer; color: #eef1f6; font-size: 15px; }
+.ckMed .m.oculto { display: none; }
+.ckMed input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.ckMed .r { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 2px #52525b; }
+.ckMed .mt b { display: block; } .ckMed .mt small { color: #a1a1aa; font-size: 12.5px; }
+.ckMed .mp { font-weight: 700; white-space: nowrap; }
+.ckMed .m:has(input:checked) { border-color: #f2ca50; background: rgba(242,202,80,.07); }
+.ckMed .m:has(input:checked) .r { box-shadow: inset 0 0 0 5px #f2ca50; }
+.ckMed .m:has(input:focus-visible) { outline: 2px solid #f2ca50; outline-offset: 2px; }
+.ck[data-medio="yape"] .ckT, .ck[data-medio="tarjeta"] .ckY { display: none !important; }
+.ckPed { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fde68a; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
+.ckPed #okNom { color: #fff; }
+.ck .wsp { border-radius: 999px; }
 .form { display: grid; gap: 14px; margin-top: 16px; }
 .form label { display: block; font-size: 14px; color: #a5b0c2; }
 .acepto { display: flex !important; gap: 10px; align-items: flex-start; font-size: 14px; }
 .acepto input { width: 20px; height: 20px; margin-top: 2px; flex-shrink: 0; accent-color: #f2ca50; }
 .acepto a { color: #eef1f6; }
 .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.dlg .btn { width: 100%; }
-.dlg .pie { margin-top: 10px; font-size: 13.5px; color: #a5b0c2; text-align: center; }
-.dlg .pie a { color: #f2ca50; }
+.ck .btn { width: 100%; display: block; line-height: 56px; text-align: center; padding: 0 20px; }
+.ck .pie { margin-top: 2px; font-size: 13px; color: #8a8a93; text-align: center; }
+.ck .pie b { color: #eef1f6; }
 .ok { text-align: center; }
 .ok .ic { width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: #053; background: #6ee7b7; }
 .pedc { display: inline-block; margin: 10px 0 12px; padding: 4px 10px; border-radius: 99px; font-size: 13px; font-weight: 800; letter-spacing: .04em; color: #fde68a; background: rgba(251,191,36,.1); font-variant-numeric: tabular-nums; }
@@ -252,6 +277,9 @@ a { color: inherit; }
 .pago img { width: 200px; height: 200px; object-fit: contain; display: block; margin: 0 auto; border-radius: 8px; }
 .pago .tit { font-size: 14px; margin-top: 8px; }
 .pago .guardar { display: inline-block; margin-top: 10px; padding: 9px 14px; border-radius: 10px; border: 1px solid #d1d5db; font-size: 13px; font-weight: 700; color: #1e2328; text-decoration: none; }
+.pago .ojo { margin: 10px 0 0; padding: 9px 11px; border-radius: 10px; background: #fff7e0; border: 1px solid #f2ca50; color: #5c4307; font-size: 13px; line-height: 1.45; }
+.pago .ojo b { color: #1e2328; }
+.ojoH b { color: var(--ink); }
 .pago .tip, .pago .sinqr { font-size: 12.5px; color: #6b7280; margin-top: 6px; }
 ol.pas { text-align: left; margin: 14px 0 0 20px; display: grid; gap: 8px; font-size: 15px; }
 .wsp { display: block; margin-top: 16px; padding: 13px 18px; border-radius: 12px; background: #25D366; color: #052e16; font-weight: 800; text-decoration: none; text-align: center; }
@@ -328,7 +356,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
   .cierre h2 { font-size: 13vw; }
   .anillo { height: 150px; margin-top: 40px; }
   .leyenda { font-size: 14px; }
-  .dlg { padding: 22px; }
+  .ck { padding: 18px; }
   footer .c { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
   footer .c > :first-child, footer .c > :last-child { grid-column: 1 / -1; }
   .logo { padding-top: 150px; }
@@ -352,9 +380,8 @@ footer a { color: inherit; overflow-wrap: anywhere; }
 .btn, .pl, .tj input, .form input[type=text], .form input[type=email], .form input[type=tel] { border-radius: 999px; }
 .form input[type=text], .form input[type=email], .form input[type=tel], .tj input { padding: 0 20px; }
 .btn { font-weight: 600; font-size: 16px; }
-.pic, .tj, .dlg, [data-ui], [data-tema="claro"] .dlg { border-radius: 14px; }
+.pic, .tj, [data-ui] { border-radius: 14px; }
 .pic { background: transparent; box-shadow: inset 0 0 0 1px var(--linea); }
-.dlg { background: #08080a; box-shadow: inset 0 0 0 1px rgba(242,202,80,.3); }
 .datos ul { gap: 22px; }
 .datos li { padding-top: 22px; border-top: 1px solid var(--linea); }
 .precio .incl { gap: 0; }
@@ -369,7 +396,6 @@ footer a { color: inherit; overflow-wrap: anywhere; }
 }
 /* Diseño 168 D: tema oscuro en negro neutro (antes azul oscuro); los títulos dorados brillan como la tarjeta GEN I.
    Las pantallas de la App siguen en su azul oscuro (son la App real); sus marcos de celular pasan a grafito. */
-.dlg { background: #0a0a0a; }
 [data-tema="oscuro"] .movil, [data-tema="oscuro"] .tel { background: #161616; }
 [data-tema="oscuro"] .hero h1 em, [data-tema="oscuro"] .rg .l h2 em, [data-tema="oscuro"] .cierre h2 em { background: linear-gradient(100deg, #b8862a, #f6dc8c 45%, #d9ad3f 70%); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .08em; }
 @media (prefers-reduced-motion: reduce) {
@@ -496,15 +522,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
         <a class="btn" href="#pide" id="bYape">Yape o Plin · <b id="yPrecio">S/ 49</b> <span>· S/ 10 menos</span></a>
         <button type="button" class="alt" id="bTarjeta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h3"/></svg>Tarjeta (Hotmart) · <b id="tPrecio">S/ 59</b> <span>· al instante</span></button>
       </div>
-      <p class="bnota">Con Yape o Plin te activamos de 8 a. m. a 10 p. m. El pago con tarjeta lo procesa Hotmart (Visa, Mastercard y otros países).</p>
-      <div class="tj oculto" id="tj">
-        <p>Escribe el <b>Gmail con el que usarás la App</b>. Hotmart lo usará para tu compra y ahí te llega tu acceso.</p>
-        <input id="tjCorreo" type="email" autocomplete="email" maxlength="120" placeholder="maria.rios@gmail.com" aria-label="Tu Gmail para la App">
-        <p class="nota-oro">Usa este mismo Gmail en Hotmart.</p>
-        <div class="err oculto" id="tjErr" role="alert"></div>
-        <a class="btn" id="tjIr" href="#" target="_top" rel="noopener">Ir a pagar ·&nbsp;<span id="tjPrecio">S/ 59</span></a>
-        <p class="bnota">Al pagar aceptas la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y los <a href="terminos.html" target="_blank" rel="noopener">términos</a>.</p>
-      </div>
+      <p class="bnota">Con Yape o Plin te activamos de 8 a. m. a 10 p. m. El pago con tarjeta lo procesa Hotmart (Visa, Mastercard y otros países). Eliges cómo pagar en el paso siguiente.</p>
     </div>
     <!--/tarjeta-->
     <p class="pausa oculto" id="pausa">Nuevos accesos muy pronto.</p>
@@ -516,6 +534,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
   <h2 class="D" id="faq-h" data-e>Preguntas</h2>
   <div class="lista">
     <div class="q" id="faqGen" data-e><h3>¿Qué es GEN <span class="genQ">I</span>?</h3><p id="genR">GEN viene de Génesis: los primeros miembros de SP, con acceso de por vida. Tu GEN se queda contigo para siempre.</p></div>
+    <div class="q" data-e><h3>¿Cómo sé que es la página oficial de SP?</h3><p>La única página es <b>sp-sistemapersonal.github.io</b>. Antes de confirmar un pago, Yape te muestra a quién le pagas: debe decir el nombre de nuestro titular, el mismo que sale debajo del QR. Tu acceso solo te llega desde <b>sistemapersonal.app@gmail.com</b> y nunca te pedimos tu contraseña. Si ves otra página con SP, no pagues y avísanos por WhatsApp.</p></div>
     <div class="q" data-e><h3>¿Cómo entro a la App?</h3><p>Con tu Gmail, desde el link que te enviamos al confirmar tu pago. La primera vez, Google te mostrará un aviso porque SP es una app nueva: te enviamos los pasos junto con tu acceso.</p></div>
     <div class="q" data-e><h3>¿Necesito una cuenta de Google?</h3><p>Sí. La App funciona con tu Gmail y guarda tus datos en tu propio Google Drive.</p></div>
     <div class="q" data-e><h3>¿Alguien más ve mis datos?</h3><p>No. Tus finanzas van a tu Google Drive; nosotros no las vemos. Solo guardamos tu nombre, correo y WhatsApp para darte acceso.</p></div>
@@ -538,42 +557,45 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       <div class="leyenda"><div><i style="background:#5ad1c0"></i>Necesidades<b data-n="60">60%</b></div><div><i style="background:#e2683c"></i>Deseos<b data-n="20">20%</b></div><div><i style="background:#f2ca50"></i>Ahorro<b data-n="20">20%</b></div></div>
     </div>
   </div>
-  <div class="dlg" data-e style="--d:120ms">
+  <div class="ck" id="ck" data-paso="1" data-medio="yape" data-e style="--d:120ms">
+    <div class="ckSum">
+      <span class="ckGen soloGen" aria-hidden="true"><small>SP · MIEMBRO</small>GEN <span class="genQ">I</span></span>
+      <div class="ckQue"><b class="soloGen">Acceso GEN <span class="genQ">I</span> · de por vida</b><b class="soloPlanes oculto">Plan <span id="ckPlan">Anual</span></b><span class="soloGen">Toda la App, sin mensualidades</span><span class="soloPlanes oculto">Toda la App, con las mejoras que vengan</span></div>
+    </div>
+    <ol class="ckPasos" aria-label="Pasos"><li class="on">Tus datos</li><li class="on">Cómo pagas</li><li class="p3">Pagar</li></ol>
     <div id="vForm">
-      <h3>Pide tu acceso</h3>
       <form id="form" class="form" novalidate>
         <div><label for="nombre">Nombre completo</label><input id="nombre" type="text" autocomplete="name" maxlength="80" placeholder="María Ríos Castillo" required></div>
         <div><label for="correo">Tu Gmail (con el que usarás la App)</label><input id="correo" type="email" autocomplete="email" maxlength="120" placeholder="maria.rios@gmail.com" required>
-          <p class="nota-oro">Tu acceso queda en este Gmail. Usa el mismo para entrar.</p></div>
+          <p class="nota-oro">Tu acceso queda en este Gmail. Usa el mismo para entrar<span class="ckT"> y en Hotmart</span>.</p></div>
         <div><label for="whatsapp">WhatsApp</label><input id="whatsapp" type="tel" autocomplete="tel" maxlength="20" placeholder="+51 987 654 321" required></div>
         <div class="trampa" aria-hidden="true"><label for="sitio">Deja esto vacío</label><input id="sitio" type="text" tabindex="-1" autocomplete="off"></div>
+        <fieldset class="ckMed"><legend>Cómo pagas</legend>
+          <label class="m y"><input type="radio" name="medio" id="mYape" value="yape" checked><span class="r" aria-hidden="true"></span><span class="mt"><b>Yape o Plin</b><small>Escaneas un QR · <span class="nw">activamos de 8 a. m. a 10 p. m.</span></small></span><span class="mp precioVivo" id="ckPY">S/ 49</span></label>
+          <label class="m t soloTarjeta oculto"><input type="radio" name="medio" id="mTarjeta" value="tarjeta"><span class="r" aria-hidden="true"></span><span class="mt"><b>Tarjeta</b><small>Pagas en Hotmart · se activa al instante</small></span><span class="mp precioVivo" id="ckPT">S/ 59</span></label>
+        </fieldset>
         <label class="acepto"><input id="acepto" type="checkbox"> <span>Acepto la <a href="privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y los <a href="terminos.html" target="_blank" rel="noopener">términos</a>.</span></label>
         <div class="err oculto" id="err" role="alert"></div>
-        <button class="btn" type="submit" id="enviar">Pedir mi acceso</button>
-        <p class="pie" id="chicoPago">Pago único por Yape o Plin · Activamos de 8 a. m. a 10 p. m.</p>
-        <p class="pie soloTarjeta oculto">¿Prefieres tarjeta? <a href="#precios" id="irTarjeta">Paga con Hotmart</a></p>
+        <button class="btn ckY" type="submit" id="enviar">Continuar al pago<span class="precioVivo" id="ckBY"> · S/ 49</span></button>
+        <a class="btn ckT" id="tjIr" href="#" target="_top" rel="noopener">Ir a pagar en Hotmart<span class="precioVivo" id="tjPrecio"> · S/ 59</span></a>
+        <p class="pie ckY" id="chicoPago">Esta página no cobra: pagas desde tu app de Yape o Plin.</p>
+        <p class="pie ckT ojoH">Pagarás en la página de Hotmart: su dirección empieza con <b>pay.hotmart.com</b>. Si es otra, no pagues.</p>
       </form>
     </div>
     <div id="vOk" class="ok oculto" aria-live="polite">
-      <div class="ic">✓</div>
-      <h3>¡Pedido recibido<span id="okNom"></span>!</h3>
-      <span class="pedc oculto" id="okPed"></span>
+      <p class="ckPed"><span id="okPed">PEDIDO</span><span id="okNom"></span></p>
       <div class="pago">
         <small>Paga con Yape o Plin · monto exacto</small>
         <div class="m" id="okMonto">S/ 49.00</div>
         <img id="okQr" class="oculto" alt="QR de Yape o Plin para pagar">
         <p class="sinqr oculto" id="okSinQr">Escríbenos por WhatsApp y te enviamos el QR.</p>
         <div class="tit oculto" id="okTit"></div>
+        <p class="ojo oculto" id="okOjo"><b>Antes de confirmar, Yape te muestra a quién le pagas:</b> debe decir «<b id="okOjoNom"></b>». Si dice otro nombre, cancela. Tu acceso solo llega desde <b>sistemapersonal.app@gmail.com</b>.</p>
         <a class="guardar oculto" id="okGuardar" download="qr-sp.png" href="#">⬇ Guardar QR</a>
         <p class="tip oculto" id="okTip">¿Estás en el celular? Guarda el QR y en Yape toca <b>Escanear → Galería</b>.</p>
       </div>
-      <ol class="pas">
-        <li>Paga <b id="okMonto2">el monto</b> con el QR.</li>
-        <li>Toca el botón y envíanos la captura.</li>
-        <li>Te mandamos el <b>link de la App</b> a tu correo (8 a. m. a 10 p. m.).</li>
-      </ol>
       <a class="wsp oculto" id="okWsp" href="#" target="_blank" rel="noopener">Ya pagué · enviar captura</a>
-      <p class="chico"><b>Guarda el QR o toma captura de esta pantalla.</b> Cuando confirmemos tu pago te escribimos a <b id="okCorreo"></b>.</p>
+      <p class="chico"><b>Guarda el QR o toma captura de esta pantalla.</b> Cuando confirmemos tu pago te mandamos el link de la App a <b id="okCorreo"></b> (8 a. m. a 10 p. m.).</p>
     </div>
   </div>
 </div></section>
@@ -701,7 +723,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       $("precioCard").textContent = r.moneda + " " + r.precio; $("heroPrecio").textContent = "· " + r.moneda + " " + r.precio;
     }
     // Diseño 144b: sin cupos ni escalera de generaciones; en pausa solo «muy pronto»
-    if (!r.abierto) { $("pausa").classList.remove("oculto"); $("enviar").disabled = true; $("enviar").textContent = "Pedir mi acceso (pronto)"; }
+    if (!r.abierto) { $("pausa").classList.remove("oculto"); $("enviar").disabled = true; }
     if (r.planes) {
       // Las 6 GEN completas: solo las casillas mensual y anual
       var soles = function (n) { return r.moneda + " " + (Math.round(n * 100) % 100 ? Number(n).toFixed(2) : String(Math.round(n))); };
@@ -710,7 +732,6 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       cada(".soloGen", function (e) { e.classList.add("oculto"); }); cada(".soloPlanes", function (e) { e.classList.remove("oculto"); });
       $("planes").classList.remove("oculto");
       $("incApp").textContent = "Toda la App, mes a mes o por año";
-      $("chicoPago").textContent = "Pago por Yape o Plin · Activamos de 8 a. m. a 10 p. m.";
       $("faqMes").textContent = "Puedes pagar mes a mes o por un año (te ahorras 2 meses). Renuevas cuando quieras; si no renuevas, la App queda en solo lectura y puedes descargar tus datos.";
     }
     if (r.gen) { $("genN").textContent = r.gen; cada(".genQ", function (e) { e.textContent = r.gen; }); }
@@ -722,31 +743,49 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       $("precioTxt").textContent = "pago único con Yape o Plin"; $("precioTxt").style.display = "block"; $("precioTxt").style.marginLeft = "0"; $("precioTxt").style.marginTop = "14px";
       $("yPrecio").textContent = r.moneda + " " + r.precio;
       $("bYape").lastElementChild.textContent = dif > 0 ? "· " + r.moneda + " " + dif + " menos" : "";
-      $("tPrecio").textContent = tP; $("tjPrecio").textContent = tP;
-      try { var gm = localStorage.getItem("sp_gmail"); if (gm) $("tjCorreo").value = gm; } catch (x) {}
+      $("tPrecio").textContent = tP; $("tjPrecio").textContent = " · " + tP; $("ckPT").textContent = tP;
     }
+    boton();
     if (r.whatsapp) { $("pieWsp").innerHTML = '<a target="_blank" rel="noopener">WhatsApp</a>'; $("pieWsp").firstChild.href = wa("Hola, tengo una consulta sobre SP."); }
   }).WEB_datos();
-  // Tarjeta: pide el Gmail de la App y lo pasa a Hotmart ya escrito
   var gmailOk = function (v) { return /^[^@\s<>"']+@[^@\s<>"']+\.[a-z]{2,}$/i.test(v) && v.length <= 120; };
-  var abrirTj = function () { $("tj").classList.remove("oculto"); $("tjCorreo").focus(); };
-  $("bTarjeta").addEventListener("click", abrirTj);
-  $("irTarjeta").addEventListener("click", function () { setTimeout(abrirTj, 400); });
-  $("tjIr").addEventListener("click", function (e) {
-    var v = $("tjCorreo").value.trim().toLowerCase();
-    if (!datos || !datos.tarjeta || !gmailOk(v)) { e.preventDefault(); $("tjErr").textContent = "Escribe tu Gmail (el que usarás en la App)."; $("tjErr").classList.remove("oculto"); return; }
-    $("tjErr").classList.add("oculto");
-    try { localStorage.setItem("sp_gmail", v); } catch (x) {}
-    $("tjIr").href = datos.tarjeta.link + (datos.tarjeta.link.indexOf("?") >= 0 ? "&" : "?") + "email=" + encodeURIComponent(v);
-  });
+  var err = function (t) { $("err").textContent = t || ""; $("err").classList.toggle("oculto", !t); };
   var PLAN = "ANUAL";
+  // Diseño 172b: el texto y el precio del botón según el plan, la pausa o el envío
+  var boton = function (txt) {
+    var b = $("enviar"), r = datos;
+    if (txt) { b.textContent = txt; return; }
+    if (r && !r.abierto) { b.textContent = "Pedir mi acceso (pronto)"; return; }
+    var pre = !r ? "" : r.planes ? (PLAN === "MENSUAL" ? $("pMes") : $("pAnio")).textContent : r.precio ? r.moneda + " " + r.precio : "";
+    b.innerHTML = "Continuar al pago<span class=\"precioVivo\"></span>"; b.lastChild.textContent = pre ? " · " + pre : "";
+    if (r && r.planes) { $("ckPY").textContent = pre; $("ckPlan").textContent = PLAN === "MENSUAL" ? "Mensual" : "Anual"; }
+    else if (r && r.precio) $("ckPY").textContent = r.moneda + " " + r.precio;
+  };
   cada(".pl", function (b) {
     b.addEventListener("click", function () {
       PLAN = b.getAttribute("data-plan");
       cada(".pl", function (x) { x.classList.toggle("sel", x === b); });
+      boton();
     });
   });
-  var err = function (t) { $("err").textContent = t || ""; $("err").classList.toggle("oculto", !t); };
+  // Cómo pagas: Yape o Plin (QR en este cuadro) o tarjeta (Hotmart, con el mismo Gmail ya escrito)
+  var medio = function (m) { $("ck").setAttribute("data-medio", m); $(m === "tarjeta" ? "mTarjeta" : "mYape").checked = true; err(""); };
+  cada('input[name="medio"]', function (x) { x.addEventListener("change", function () { medio(x.value); }); });
+  var irAlCuadro = function (m) { medio(m); setTimeout(function () { try { $("correo").focus({ preventScroll: true }); } catch (x) {} }, 600); };
+  $("bYape").addEventListener("click", function () { irAlCuadro("yape"); });
+  $("bTarjeta").addEventListener("click", function () {
+    irAlCuadro("tarjeta");
+    $("pide").scrollIntoView({ behavior: window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  });
+  try { var gm0 = localStorage.getItem("sp_gmail"); if (gm0 && !$("correo").value) $("correo").value = gm0; } catch (x) {}
+  $("tjIr").addEventListener("click", function (e) {
+    var v = $("correo").value.trim().toLowerCase();
+    if (!datos || !datos.tarjeta || !gmailOk(v)) { e.preventDefault(); return err("Escribe tu Gmail (el que usarás en la App)."); }
+    if (!$("acepto").checked) { e.preventDefault(); return err("Para continuar acepta la política de privacidad y los términos."); }
+    err("");
+    try { localStorage.setItem("sp_gmail", v); } catch (x) {}
+    $("tjIr").href = datos.tarjeta.link + (datos.tarjeta.link.indexOf("?") >= 0 ? "&" : "?") + "email=" + encodeURIComponent(v);
+  });
   $("form").addEventListener("submit", function (e) {
     e.preventDefault();
     var d = { nombre: $("nombre").value.trim(), correo: $("correo").value.trim(), whatsapp: $("whatsapp").value.trim(), acepto: $("acepto").checked, sitio: $("sitio").value, tk: (datos && datos.tk) || TK, plan: datos && datos.planes ? PLAN : "" };
@@ -754,26 +793,27 @@ footer a { color: inherit; overflow-wrap: anywhere; }
     if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(d.correo)) return err("Escribe tu Gmail (el que usarás en la App).");
     if (d.whatsapp.replace(/[^\d]/g, "").length < 9) return err("Escribe tu WhatsApp con código de país.");
     if (!d.acepto) return err("Para continuar acepta la política de privacidad y los términos.");
-    err(""); $("enviar").disabled = true; $("enviar").textContent = "Enviando…";
+    err(""); $("enviar").disabled = true; boton("Enviando…");
+    try { localStorage.setItem("sp_gmail", d.correo.toLowerCase()); } catch (x) {}
     google.script.run.withSuccessHandler(function (r) {
-      $("enviar").disabled = false; $("enviar").textContent = "Pedir mi acceso";
+      $("enviar").disabled = false; boton();
       if (!r || !r.ok) return err((r && r.error) || "No pudimos enviar tu pedido. Intenta de nuevo.");
-      $("vForm").classList.add("oculto"); $("vOk").classList.remove("oculto");
-      $("okNom").textContent = ", " + d.nombre.split(/\s+/)[0];
+      $("vForm").classList.add("oculto"); $("vOk").classList.remove("oculto"); $("ck").setAttribute("data-paso", "3");
+      $("okNom").textContent = " · " + d.nombre.split(/\s+/)[0];
       $("okCorreo").textContent = r.correo || d.correo;
-      if (r.pedido) { $("okPed").textContent = "PEDIDO " + r.pedido; $("okPed").classList.remove("oculto"); }
+      $("okPed").textContent = r.pedido ? "PEDIDO " + r.pedido : "TU PEDIDO";
       var monto = r.monto ? (r.moneda || "S/") + " " + Number(r.monto).toFixed(2) : "";
-      if (monto) { $("okMonto").textContent = monto; $("okMonto2").textContent = monto; }
+      if (monto) $("okMonto").textContent = monto;
       if (r.qr && /^data:image\/(png|jpeg);base64,/.test(r.qr)) {
         $("okQr").src = r.qr; $("okGuardar").href = r.qr;
         ["okQr", "okGuardar", "okTip"].forEach(function (k) { $(k).classList.remove("oculto"); });
       } else $("okSinQr").classList.remove("oculto");
-      if (r.titular) { $("okTit").innerHTML = "<b></b> · Yape / Plin"; $("okTit").firstChild.textContent = r.titular; $("okTit").classList.remove("oculto"); }
+      if (r.titular) { $("okTit").innerHTML = "<b></b> · Yape / Plin"; $("okTit").firstChild.textContent = r.titular; $("okTit").classList.remove("oculto"); $("okOjoNom").textContent = r.titular; $("okOjo").classList.remove("oculto"); }
       var w = wa("Hola, ya pagué el pedido" + (r.pedido ? " " + r.pedido : "") + (monto ? " (" + monto + ")" : "") + " de SP. Mi correo de la App es: " + (r.correo || d.correo) + ". Te envío la captura.");
       if (w) { $("okWsp").href = w; $("okWsp").classList.remove("oculto"); }
       $("pide").scrollIntoView({ behavior: "smooth", block: "start" });
     }).withFailureHandler(function () {
-      $("enviar").disabled = false; $("enviar").textContent = "Pedir mi acceso";
+      $("enviar").disabled = false; boton();
       err("No pudimos enviar tu pedido. Revisa tu conexión e intenta de nuevo.");
     }).WEB_pedir(d);
   });
