@@ -43,7 +43,7 @@
 /* partes que son oscuras en los dos temas */
 .oscura, .rg .l, .cierre { --ink: #fafafa; --muted: #a1a1aa; --suave: #8a8a93; --linea: rgba(255,255,255,.08); --acc-txt: #f2ca50; --oro-txt: #fde68a; --rojo: #fca5a5; --input: #0d121c; --borde: #2a3346; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
 body { background: var(--bg); color: var(--ink); font-family: "Onest", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; font-size: 17px; line-height: 1.55; overflow-x: hidden; transition: background .3s, color .3s; }
 ::selection { background: #f2ca50; color: #0a0e17; }
 a { color: inherit; }
@@ -58,6 +58,11 @@ a { color: inherit; }
 .enlace { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 5px; }
 /* barra */
 .barra { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 0; }
+/* Diseño 178: la barra se queda fija arriba al bajar (fondo un poco transparente y línea fina) */
+.fija { position: sticky; top: 0; z-index: 60; background: color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); transition: box-shadow .2s; }
+.fija .barra { transition: padding .2s; }
+body.bajo .fija { box-shadow: 0 1px 0 var(--linea); }
+body.bajo .fija .barra { padding: 12px 0; }
 .mk { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; text-decoration: none; }
 .lg { width: 36px; height: 36px; flex: none; border-radius: 10px; display: grid; place-items: center; background: linear-gradient(160deg, #1a2236, #0b0f19 70%); box-shadow: 0 0 0 1.5px rgba(242,202,80,.5); font: 800 15px "Inter", "Onest", sans-serif; color: #f2ca50; }
 .barra nav { display: flex; align-items: center; gap: 28px; font-size: 15px; }
@@ -258,7 +263,7 @@ a { color: inherit; }
 .ck[data-medio="yape"] .ckT, .ck[data-medio="tarjeta"] .ckY { display: none !important; }
 .ckPed { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fde68a; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
 .ckPed #okNom { color: #fff; }
-.ck .wsp { border-radius: 999px; }
+.ck .wsp, .ck .capt { border-radius: 999px; }
 .ckVolver { display: block; width: 100%; margin-top: 14px; padding: 12px; border: 1px dashed #3f3f46; border-radius: 999px; background: transparent; color: #a1a1aa; font: 14px "Onest", sans-serif; cursor: pointer; }
 .ckVolver b { color: #f2ca50; font-weight: 600; }
 .ckVolver.oculto { display: none; }
@@ -286,6 +291,10 @@ a { color: inherit; }
 .pago .tip, .pago .sinqr { font-size: 12.5px; color: #6b7280; margin-top: 6px; }
 ol.pas { text-align: left; margin: 14px 0 0 20px; display: grid; gap: 8px; font-size: 15px; }
 .wsp { display: block; margin-top: 16px; padding: 13px 18px; border-radius: 12px; background: #25D366; color: #052e16; font-weight: 800; text-decoration: none; text-align: center; }
+/* Diseño 179: la captura del pago va por correo (el WhatsApp del dueño ya no sale en la página) */
+.capt { display: block; margin-top: 16px; padding: 13px 18px; border-radius: 12px; background: #f2ca50; color: #111; font-weight: 800; text-decoration: none; text-align: center; }
+.capNota { margin-top: 8px; font-size: 13px; color: #a1a1aa; text-align: center; }
+.capNota b { color: #eef1f6; }
 .chico { font-size: 13.5px; color: #a5b0c2; text-align: center; margin-top: 12px; }
 /* pie: columnas y el logo Premium de la App */
 footer { padding: 70px 0 30px; }
@@ -413,12 +422,12 @@ footer a { color: inherit; overflow-wrap: anywhere; }
 </style>
 </head>
 <body>
-<div class="in">
+<div class="fija"><div class="in">
 <header class="barra">
   <a class="mk" href="#arriba"><span class="lg">SP</span>Sistema Personal</a>
   <nav><a href="#anota">Qué hace</a><a href="#precios">Precio</a><a href="#preguntas">Preguntas</a><a class="e" href="entrar.html">Entrar a mi App</a><button type="button" class="tema" id="tema" aria-label="Cambiar el color de la página"><span class="TO" aria-hidden="true">☾</span><span class="TC" aria-hidden="true">☀</span></button></nav>
 </header>
-</div>
+</div></div>
 
 <main>
 <div class="in">
@@ -537,7 +546,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
   <h2 class="D" id="faq-h" data-e>Preguntas</h2>
   <div class="lista">
     <div class="q" id="faqGen" data-e><h3>¿Qué es GEN <span class="genQ">I</span>?</h3><p id="genR">GEN viene de Génesis: los primeros miembros de SP, con acceso de por vida. Tu GEN se queda contigo para siempre.</p></div>
-    <div class="q" data-e><h3>¿Cómo sé que es la página oficial de SP?</h3><p>La única página es <b>sp-sistemapersonal.github.io</b>. Antes de confirmar un pago, Yape te muestra a quién le pagas: debe decir el nombre de nuestro titular, el mismo que sale debajo del QR. Tu acceso solo te llega desde <b>sistemapersonal.app@gmail.com</b> y nunca te pedimos tu contraseña. Si ves otra página con SP, no pagues y avísanos por WhatsApp.</p></div>
+    <div class="q" data-e><h3>¿Cómo sé que es la página oficial de SP?</h3><p>La única página es <b>sp-sistemapersonal.github.io</b>. Antes de confirmar un pago, Yape te muestra a quién le pagas: debe decir el nombre de nuestro titular, el mismo que sale debajo del QR. Tu acceso solo te llega desde <b>sistemapersonal.app@gmail.com</b> y nunca te pedimos tu contraseña. Si ves otra página con SP, no pagues y avísanos a <b class="correoC">sistemapersonal.app@gmail.com</b>.</p></div>
     <div class="q" data-e><h3>¿Cómo entro a la App?</h3><p>Con tu Gmail, desde el link que te enviamos al confirmar tu pago. La primera vez, Google te mostrará un aviso porque SP es una app nueva: te enviamos los pasos junto con tu acceso.</p></div>
     <div class="q" data-e><h3>¿Necesito una cuenta de Google?</h3><p>Sí. La App funciona con tu Gmail y guarda tus datos en tu propio Google Drive.</p></div>
     <div class="q" data-e><h3>¿Alguien más ve mis datos?</h3><p>No. Tus finanzas van a tu Google Drive; nosotros no las vemos. Solo guardamos tu nombre, correo y WhatsApp para darte acceso.</p></div>
@@ -591,13 +600,14 @@ footer a { color: inherit; overflow-wrap: anywhere; }
         <small>Paga con Yape o Plin · monto exacto</small>
         <div class="m" id="okMonto">S/ 49.00</div>
         <img id="okQr" class="oculto" alt="QR de Yape o Plin para pagar">
-        <p class="sinqr oculto" id="okSinQr">Escríbenos por WhatsApp y te enviamos el QR.</p>
+        <p class="sinqr oculto" id="okSinQr">Escríbenos a <b class="correoC">sistemapersonal.app@gmail.com</b> y te enviamos el QR.</p>
         <div class="tit oculto" id="okTit"></div>
         <p class="ojo oculto" id="okOjo"><b>Antes de confirmar, Yape te muestra a quién le pagas:</b> debe decir «<b id="okOjoNom"></b>». Si dice otro nombre, cancela. Tu acceso solo llega desde <b>sistemapersonal.app@gmail.com</b>.</p>
         <a class="guardar oculto" id="okGuardar" download="qr-sp.png" href="#">⬇ Guardar QR</a>
         <p class="tip oculto" id="okTip">¿Estás en el celular? Guarda el QR y en Yape toca <b>Escanear → Galería</b>.</p>
       </div>
-      <a class="wsp oculto" id="okWsp" href="#" target="_blank" rel="noopener">Ya pagué · enviar captura</a>
+      <a class="capt oculto" id="okWsp" href="#">✉ Ya pagué · enviar captura por correo</a>
+      <p class="capNota oculto" id="okCapNota">Se abre tu correo con el pedido ya escrito. <b>Adjunta la foto del pago</b> y envía a <b class="correoC">sistemapersonal.app@gmail.com</b>.</p>
       <p class="chico"><b>Guarda el QR o toma captura de esta pantalla.</b> Cuando confirmemos tu pago te mandamos el link de la App a <b id="okCorreo"></b> (8 a. m. a 10 p. m.).</p>
       <button type="button" class="ckVolver soloTarjeta oculto" id="aTarjeta">¿Preferías tarjeta? <b>Pagar con tarjeta (Hotmart)<span class="precioVivo" id="aTarjetaP"> · S/ 59</span></b></button>
     </div>
@@ -610,7 +620,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
     <div><a class="mk" href="#arriba"><span class="lg">SP</span>Sistema Personal</a><p style="margin-top:12px;max-width:30ch">Tu dinero claro, en tu propio Google Drive. Hecho en Perú.</p></div>
     <ul><li><b>Página</b></li><li><a href="#anota">Qué hace</a></li><li><a href="#precios">Precio</a></li><li><a href="#preguntas">Preguntas</a></li></ul>
     <ul><li><b>Legal</b></li><li><a href="terminos.html" target="_blank" rel="noopener">Términos y condiciones</a></li><li><a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a></li></ul>
-    <ul><li><b>Contacto</b></li><li><a href="mailto:sistemapersonal.app@gmail.com">sistemapersonal.app@gmail.com</a></li><li id="pieWsp"></li></ul>
+    <ul><li><b>Contacto</b></li><li><a href="mailto:sistemapersonal.app@gmail.com">sistemapersonal.app@gmail.com</a></li></ul>
   </div>
   <div class="logo" aria-label="SP · Sistema Personal">
     <span class="orb a" style="width:min(640px,92vw)"></span>
@@ -626,6 +636,9 @@ footer a { color: inherit; overflow-wrap: anywhere; }
 
 <script data-sp="vida">
 (function () {
+  // Diseño 178: al bajar, la barra fija se pone más baja y con línea
+  var bajo = function () { document.body.classList.toggle("bajo", (window.scrollY || 0) > 8); };
+  window.addEventListener("scroll", bajo, { passive: true }); bajo();
   var rm = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   // Diseño 166: el botón ☾/☀ cambia el color de la página y lo recuerda en este equipo (no se envía a ningún lado)
   var raiz = document.documentElement, bt = document.getElementById("tema");
@@ -717,11 +730,14 @@ footer a { color: inherit; overflow-wrap: anywhere; }
   var $ = function (id) { return document.getElementById(id); };
   var TK = "", datos = null;
   var cada = function (sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); };
-  var wa = function (txt) { return datos && datos.whatsapp ? "https://wa.me/" + datos.whatsapp + "?text=" + encodeURIComponent(txt) : ""; };
+  // Diseño 179: contacto por correo (el de SP o el que diga LIC_CORREO_CONTACTO)
+  var correoC = function () { return (datos && datos.contacto) || "sistemapersonal.app@gmail.com"; };
+  var mail = function (asunto, cuerpo) { return "mailto:" + correoC() + "?subject=" + encodeURIComponent(asunto) + "&body=" + encodeURIComponent(cuerpo); };
   google.script.run.withSuccessHandler(function (r) {
     document.documentElement.classList.remove("esperando");
     if (!r || !r.ok) return;
     datos = r;
+    if (r.contacto) Array.prototype.forEach.call(document.querySelectorAll(".correoC"), function (e) { e.textContent = r.contacto; });
     if (r.precio) {
       $("precio").innerHTML = "<sup></sup>"; $("precio").firstChild.textContent = r.moneda + " "; $("precio").appendChild(document.createTextNode(String(r.precio)));
       $("precioCard").textContent = r.moneda + " " + r.precio; $("heroPrecio").textContent = "· " + r.moneda + " " + r.precio;
@@ -750,7 +766,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       $("tPrecio").textContent = tP; $("tjPrecio").textContent = " · " + tP; $("ckPT").textContent = tP; $("aTarjetaP").textContent = " · " + tP;
     }
     boton();
-    if (r.whatsapp) { $("pieWsp").innerHTML = '<a target="_blank" rel="noopener">WhatsApp</a>'; $("pieWsp").firstChild.href = wa("Hola, tengo una consulta sobre SP."); }
+    // 27/10/2026: sin link de WhatsApp en el pie (pedido del dueño: evita mensajes de molestia)
   }).WEB_datos();
   var gmailOk = function (v) { return /^[^@\s<>"']+@[^@\s<>"']+\.[a-z]{2,}$/i.test(v) && v.length <= 120; };
   var err = function (t) { $("err").textContent = t || ""; $("err").classList.toggle("oculto", !t); };
@@ -818,8 +834,8 @@ footer a { color: inherit; overflow-wrap: anywhere; }
         ["okQr", "okGuardar", "okTip"].forEach(function (k) { $(k).classList.remove("oculto"); });
       } else $("okSinQr").classList.remove("oculto");
       if (r.titular) { $("okTit").innerHTML = "<b></b> · Yape / Plin"; $("okTit").firstChild.textContent = r.titular; $("okTit").classList.remove("oculto"); $("okOjoNom").textContent = r.titular; $("okOjo").classList.remove("oculto"); }
-      var w = wa("Hola, ya pagué el pedido" + (r.pedido ? " " + r.pedido : "") + (monto ? " (" + monto + ")" : "") + " de SP. Mi correo de la App es: " + (r.correo || d.correo) + ". Te envío la captura.");
-      if (w) { $("okWsp").href = w; $("okWsp").classList.remove("oculto"); }
+      $("okWsp").href = mail("Pago " + (r.pedido || "SP") + (monto ? " · " + monto : ""), "Hola, ya pagué el pedido" + (r.pedido ? " " + r.pedido : "") + (monto ? " (" + monto + ")" : "") + " de SP.\nMi correo de la App es: " + (r.correo || d.correo) + "\n\nAdjunto la captura del pago.");
+      $("okWsp").classList.remove("oculto"); $("okCapNota").classList.remove("oculto");
       $("pide").scrollIntoView({ behavior: "smooth", block: "start" });
     }).withFailureHandler(function () {
       $("enviar").disabled = false; boton();
