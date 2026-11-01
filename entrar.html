@@ -49,6 +49,13 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 .barraW .tres { flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; box-shadow: 0 0 0 3px var(--accent); color: #fff; font-size: 19px; }
 .paso { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: center; margin-top: 22px; text-align: left; font-size: 17px; }
 .n { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--bg); font-weight: 800; }
+.linkM { margin-top: 10px; padding: 10px 12px; border-radius: 10px; border: 1px dashed rgba(242,202,80,.5); font: 13px/1.45 monospace; word-break: break-all; text-align: left; color: var(--ink); user-select: all; }
+.otro { margin-top: 14px; border: 1px solid #2a3346; border-radius: 14px; background: #0d121c; text-align: left; }
+.otro summary { cursor: pointer; padding: 14px 16px; font-size: 15px; font-weight: 700; color: var(--accent); }
+.otro .sal { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 0 16px 14px; font-size: 14.5px; color: var(--muted); }
+.otro .sal b { color: var(--ink); }
+.otro .num { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(242,202,80,.16); color: var(--accent); font-weight: 800; font-size: 13px; }
+.otro .esc { display: inline-block; margin-top: 8px; padding: 9px 12px; border-radius: 10px; border: 1px solid rgba(242,202,80,.5); color: var(--accent); text-decoration: none; font-weight: 600; font-size: 14px; word-break: break-all; }
 .pie { margin-top: 44px; font-size: 13px; color: #7d889c; }
 .pie a { color: var(--accent); }
 @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
@@ -69,6 +76,14 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
     <div class="err" id="err" role="alert"></div>
     <a class="btn apagado" id="ir" href="#">Continuar con Google →</a>
     <p class="ayuda">La primera vez Google te pide permiso: toca <b>Continuar</b> y <b>Permitir</b>. Es una sola vez.</p>
+    <button type="button" class="btn2" id="copiarLink" style="margin-top:18px">Copiar link</button>
+    <div class="linkM oculto" id="linkM"></div>
+    <details class="otro" id="otro">
+      <summary>¿Se abrió con otro Gmail?</summary>
+      <div class="sal"><span class="num">1</span><div><b>Elige la cuenta correcta.</b> Si Google te muestra varias cuentas, toca <b class="gmC">tu Gmail</b>. Si no aparece, toca «Usar otra cuenta» y entra con ella (te pide su contraseña una sola vez).</div></div>
+      <div class="sal"><span class="num">2</span><div><b>Ventana de incógnito.</b> Toca «Copiar link», abre Chrome → ⋮ → «Nueva pestaña de incógnito», pega el link y entra con <b class="gmC">tu Gmail</b>.</div></div>
+      <div class="sal"><span class="num">3</span><div><b>¿No recuerdas la contraseña de ese Gmail?</b> Te pasamos el acceso al Gmail de tu celular.<br><a class="esc" id="escribir" href="#">✉ Escríbenos a <span id="correoE"></span></a></div></div>
+    </details>
   </div>
   <div id="vAndroid" class="oculto">
     <div class="spin" aria-hidden="true"></div>
@@ -87,7 +102,8 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
     <p class="ayuda" id="copiado">Luego abre Safari y pega el link arriba.</p>
   </div>
   
-  <p class="pie">Nunca te pedimos tu contraseña · <a href="./">Volver a la página</a></p>
+  <p class="pie"><a href="./#consultar">Consultar mi pedido</a></p>
+  <p class="pie" style="margin-top:12px">Nunca te pedimos tu contraseña · <a href="./">Volver a la página</a></p>
 </div>
 
 <script>
@@ -95,12 +111,22 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
   var APP = "", BASE = "", GM = "";
   var $ = function (id) { return document.getElementById(id); };
   var valido = function (e) { return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(e); };
+  var CONTACTO = "sistemapersonal.app@gmail.com";
+  // El link de esta página con el Gmail ya puesto
+  var linkDe = function (e) { return (BASE ? BASE + "?p=app" : location.href.split("?")[0]) + (valido(e) ? (BASE ? "&" : "?") + "gm=" + encodeURIComponent(e) : ""); };
   // Gmail: el del link (?gm=…, desde el correo o WhatsApp) o el que se recordó en este celular
   if (!GM) { try { GM = (new URLSearchParams(location.search).get("gm") || "").trim().toLowerCase(); } catch (e) {} }
   if (!valido(GM)) GM = "";
   try { var g = GM || localStorage.getItem("sp_gmail"); if (g) $("gm").value = g; } catch (e) { if (GM) $("gm").value = GM; }
+  // Diseño 189: la salida 3 lleva el Gmail escrito y el correo de contacto que esté en uso
+  var ayudaGmail = function (e) {
+    Array.prototype.forEach.call(document.querySelectorAll(".gmC"), function (x) { x.textContent = valido(e) ? e : "tu Gmail"; });
+    $("correoE").textContent = CONTACTO;
+    $("escribir").href = "mailto:" + CONTACTO + "?subject=" + encodeURIComponent("SP: quiero pasar mi acceso") + "&body=" + encodeURIComponent("Hola, mi acceso está en " + (valido(e) ? e : "(mi Gmail)") + " y no recuerdo su contraseña. Quiero pasarlo al Gmail de mi celular, que es: ");
+  };
   var armar = function () {
     var e = $("gm").value.trim().toLowerCase();
+    ayudaGmail(e);
     var ok = valido(e) && /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(APP);
     $("ir").classList.toggle("apagado", !ok);
     $("ir").href = ok ? "https://accounts.google.com/AccountChooser?Email=" + e.replace(/\+/g, "%2B") + "&continue=" + APP : "#";
@@ -110,6 +136,14 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
   };
   // En GitHub el link de la App llega de SP WEB (el mismo que manda SP LICENCIAS), nunca escrito a mano en la página
   window.SP_ponerApp = function (u) { APP = String(u || ""); armar(); };
+  window.SP_ponerContacto = function (c) { if (/^[^@\s<>"'?&]+@[^@\s<>"'?&]+\.[a-z]{2,}$/i.test(String(c || ""))) { CONTACTO = String(c); armar(); } };
+  $("copiarLink").addEventListener("click", function () {
+    var e = $("gm").value.trim().toLowerCase(), b = $("copiarLink"), m = $("linkM");
+    if (!valido(e)) { $("err").textContent = "Escribe tu Gmail para copiar tu link."; return; }
+    var link = linkDe(e), aMano = function () { m.textContent = link; m.classList.remove("oculto"); b.textContent = "Copia este link"; };
+    var listo = function () { m.classList.add("oculto"); b.textContent = "Link copiado ✓"; setTimeout(function () { b.textContent = "Copiar link"; }, 2500); };
+    try { navigator.clipboard.writeText(link).then(listo, aMano); } catch (x) { aMano(); }
+  });
   $("gm").addEventListener("input", armar);
   $("ir").addEventListener("click", function () { try { localStorage.setItem("sp_gmail", $("gm").value.trim().toLowerCase()); } catch (e) {} });
   armar();
@@ -117,7 +151,7 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
   var ua = navigator.userAgent || "";
   if (!/FBAN|FBAV|FB_IAB|FBIOS|Instagram|WhatsApp|Line\/|Snapchat|TikTok|musical_ly|; wv\)/i.test(ua)) return;
   var e0 = $("gm").value.trim().toLowerCase();
-  var aqui = (BASE ? BASE + "?p=app" : location.href.split("?")[0]) + (valido(e0) ? (BASE ? "&" : "?") + "gm=" + encodeURIComponent(e0) : "");
+  var aqui = linkDe(e0);
   $("vNormal").classList.add("oculto");
   var nom = /Instagram/i.test(ua) ? "Instagram" : /FBAN|FBAV|FB_IAB|FBIOS/i.test(ua) ? "Facebook" : /TikTok|musical_ly/i.test(ua) ? "TikTok" : /WhatsApp/i.test(ua) ? "WhatsApp" : "Esta app";
   Array.prototype.forEach.call(document.querySelectorAll(".appNom"), function (x) { x.textContent = nom; });
@@ -138,6 +172,7 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 <script>(function () { var WEB = "https://script.google.com/macros/s/AKfycbyDY7e6pd_-rVcpRUT7Uzsd-2z3gxoo5sZZxbMxWU5VzJvTRqtM34zCwa3QulXBTQ_jfA/exec";
   var falla = function () { var e = document.getElementById("err"); if (e) e.textContent = "No pudimos abrir la App. Recarga la página o escríbenos por WhatsApp."; };
   fetch(WEB + "?api=datos", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
+    if (d && d.contacto && window.SP_ponerContacto) window.SP_ponerContacto(d.contacto);
     if (d && /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(d.app || "") && window.SP_ponerApp) window.SP_ponerApp(d.app); else falla();
   }, falla); })();</script>
 </body>

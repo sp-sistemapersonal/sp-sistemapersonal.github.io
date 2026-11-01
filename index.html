@@ -18,7 +18,7 @@
   function correr(ok, falla) { return new Proxy({}, { get: function (_, k) {
     if (k === "withSuccessHandler") return function (f) { return correr(f, falla); };
     if (k === "withFailureHandler") return function (f) { return correr(ok, f); };
-    return function (a) { var p = k === "WEB_datos" ? fetch(WEB + "?api=datos", { cache: "no-store" }) : k === "WEB_pedir" ? fetch(WEB, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ accion: "pedir", d: a }) }) : Promise.reject(new Error(k));
+    return function (a) { var p = k === "WEB_datos" ? fetch(WEB + "?api=datos", { cache: "no-store" }) : k === "WEB_pedir" ? fetch(WEB, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ accion: "pedir", d: a }) }) : k === "WEB_consultar" ? fetch(WEB, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify({ accion: "consultar", d: a }) }) : Promise.reject(new Error(k));
       p.then(function (r) { return r.json(); }).then(function (j) { ok && ok(j); }, function (e) { falla && falla(e); }); }; } }); }
   window.google = { script: { run: correr(null, null) } }; })();</script>
 <style>.esperando .precioVivo, .esperando #precio, .esperando #yPrecio, .esperando #tPrecio { visibility: hidden; }</style>
@@ -262,7 +262,29 @@ body.bajo .fija .barra { padding: 12px 0; }
 .ckMed .m:has(input:focus-visible) { outline: 2px solid #f2ca50; outline-offset: 2px; }
 .ck[data-medio="yape"] .ckT, .ck[data-medio="tarjeta"] .ckY { display: none !important; }
 .ckPed { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fde68a; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
-.ckPed #okNom { color: #fff; }
+.ckPed small { display: block; font-size: 11px; letter-spacing: .1em; }
+.ckPed .gr { display: inline-flex; align-items: baseline; gap: 6px; margin-top: 4px; }
+.ckPed #okPed { font: 700 22px ui-monospace, Consolas, monospace; letter-spacing: .02em; color: #fff; }
+.ckPed .gu { font-size: 12px; font-weight: 500; color: #a1a1aa; letter-spacing: 0; }
+.cSabre { margin-top: 12px; padding: 12px 14px; border-radius: 12px; background: #101a2b; box-shadow: inset 0 0 0 1px rgba(125,170,235,.32); text-align: left; font-size: 13.5px; line-height: 1.5; color: #c7d2e4; }
+.cSabre > b { color: #cfe0ff; font-size: 14px; }
+.cSabre p { margin-top: 4px; }
+.cSabre p b { color: #fff; }
+.cSabre a { color: #f2ca50; font-weight: 600; }
+.consulta { max-width: 520px; margin-top: 34px; }
+.consulta .res { margin-top: 14px; padding: 14px; border-radius: 12px; font-size: 14px; line-height: 1.5; color: #eef1f6; }
+.consulta .res .sello { display: inline-block; margin-bottom: 8px; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.consulta .res b { color: #fff; }
+.consulta .res.pendiente { background: #2a2006; box-shadow: inset 0 0 0 1px rgba(242,202,80,.4); }
+.consulta .res.pendiente .sello { background: rgba(242,202,80,.18); color: #f2ca50; }
+.consulta .res.activo { background: #0c2419; box-shadow: inset 0 0 0 1px rgba(74,222,128,.34); }
+.consulta .res.activo .sello { background: rgba(74,222,128,.16); color: #5ee596; }
+.consulta .res.revisar { background: #101a2b; box-shadow: inset 0 0 0 1px rgba(125,170,235,.34); }
+.consulta .res.revisar .sello { background: rgba(125,170,235,.16); color: #a9c8f5; }
+.consulta .res.no { background: #2a1214; box-shadow: inset 0 0 0 1px rgba(248,113,113,.34); }
+.consulta .res.no .sello { background: rgba(248,113,113,.16); color: #fb8f8f; }
+.consulta .res .btn { margin-top: 12px; line-height: 50px; }
+.consulta .err { min-height: 18px; color: #fca5a5; font-size: 13.5px; }
 .ck .wsp, .ck .capt { border-radius: 999px; }
 .ckVolver { display: block; width: 100%; margin-top: 14px; padding: 12px; border: 1px dashed #3f3f46; border-radius: 999px; background: transparent; color: #a1a1aa; font: 14px "Onest", sans-serif; cursor: pointer; }
 .ckVolver b { color: #f2ca50; font-weight: 600; }
@@ -425,7 +447,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
 <div class="fija"><div class="in">
 <header class="barra">
   <a class="mk" href="#arriba"><span class="lg">SP</span>Sistema Personal</a>
-  <nav><a href="#anota">Qué hace</a><a href="#precios">Precio</a><a href="#preguntas">Preguntas</a><a class="e" href="entrar.html">Entrar a mi App</a><button type="button" class="tema" id="tema" aria-label="Cambiar el color de la página"><span class="TO" aria-hidden="true">☾</span><span class="TC" aria-hidden="true">☀</span></button></nav>
+  <nav><a href="#anota">Qué hace</a><a href="#precios">Precio</a><a href="#preguntas">Preguntas</a><a href="#consultar" class="pc">Consultar mi pedido</a><a class="e" href="https://app.sistemapersonal.com/">Entrar a mi App</a><button type="button" class="tema" id="tema" aria-label="Cambiar el color de la página"><span class="TO" aria-hidden="true">☾</span><span class="TC" aria-hidden="true">☀</span></button></nav>
 </header>
 </div></div>
 
@@ -595,7 +617,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       </form>
     </div>
     <div id="vOk" class="ok oculto" aria-live="polite">
-      <p class="ckPed"><span id="okPed">PEDIDO</span><span id="okNom"></span></p>
+      <p class="ckPed"><small>PEDIDO</small><span class="gr"><span id="okPed"></span><span class="gu"> · guárdalo</span></span></p>
       <div class="pago">
         <small>Paga con Yape o Plin · monto exacto</small>
         <div class="m" id="okMonto">S/ 39.00</div>
@@ -608,9 +630,24 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       </div>
       <a class="capt oculto" id="okWsp" href="#">✉ Ya pagué · enviar captura por correo</a>
       <p class="capNota oculto" id="okCapNota">Se abre tu correo con el pedido ya escrito. <b>Adjunta la foto del pago</b> y envía a <b class="correoC">sistemapersonal.app@gmail.com</b>.</p>
-      <p class="chico"><b>Guarda el QR o toma captura de esta pantalla.</b> Cuando confirmemos tu pago te mandamos el link de la App a <b id="okCorreo"></b> (8 a. m. a 10 p. m.).</p>
+      <p class="chico"><b>Guarda el QR o toma captura de esta pantalla.</b></p>
+      <div class="cSabre"><b>¿Cómo sabré que ya está activo?</b><p>Cuando confirmemos tu pago te escribimos a <b id="okCorreo"></b> desde <span id="okRem">sistemapersonal.app@gmail.com</span> (8 a. m. a 10 p. m.). <b>Revisa también Spam y Promociones.</b> Si no te llega, consúltalo tú: <a href="#consultar" id="okConsultar">Consultar mi pedido →</a></p></div>
       <button type="button" class="ckVolver soloTarjeta oculto" id="aTarjeta">¿Preferías tarjeta? <b>Pagar con tarjeta (Hotmart)<span class="precioVivo" id="aTarjetaP"> · S/ 49</span></b></button>
     </div>
+  </div>
+</div></section>
+<section class="sec" id="consultar" aria-labelledby="consultar-h"><div class="in">
+  <h2 id="consultar-h">Consultar mi pedido</h2>
+  <p class="bajada">Para saber si tu acceso ya está activo.</p>
+  <div class="ck oscura consulta">
+    <form class="form" id="cForm" autocomplete="off" novalidate>
+      <label for="cPed">Número de pedido (SP-…) o código de Hotmart (HP…)<input id="cPed" autocapitalize="characters" spellcheck="false" maxlength="30" placeholder="SP-1031-01"></label>
+      <label for="cGm">Gmail con el que pediste<input id="cGm" type="email" inputmode="email" autocapitalize="none" spellcheck="false" maxlength="130" placeholder="tucorreo@gmail.com"></label>
+      <p class="err" id="cErr" role="alert"></p>
+      <button class="btn" type="submit" id="cIr">Consultar</button>
+      <p class="pie">Pedimos los dos datos para proteger tu pedido. Nunca te pedimos tu contraseña.</p>
+    </form>
+    <div id="cRes" aria-live="polite"></div>
   </div>
 </div></section>
 </main>
@@ -618,7 +655,7 @@ footer a { color: inherit; overflow-wrap: anywhere; }
 <div class="in"><footer>
   <div class="c">
     <div><a class="mk" href="#arriba"><span class="lg">SP</span>Sistema Personal</a><p style="margin-top:12px;max-width:30ch">Tu dinero claro, en tu propio Google Drive. Hecho en Perú.</p></div>
-    <ul><li><b>Página</b></li><li><a href="#anota">Qué hace</a></li><li><a href="#precios">Precio</a></li><li><a href="#preguntas">Preguntas</a></li></ul>
+    <ul><li><b>Página</b></li><li><a href="#anota">Qué hace</a></li><li><a href="#precios">Precio</a></li><li><a href="#preguntas">Preguntas</a></li><li><a href="#consultar">Consultar mi pedido</a></li></ul>
     <ul><li><b>Legal</b></li><li><a href="terminos.html" target="_blank" rel="noopener">Términos y condiciones</a></li><li><a href="privacidad.html" target="_blank" rel="noopener">Política de privacidad</a></li></ul>
     <ul><li><b>Contacto</b></li><li><a href="mailto:sistemapersonal.app@gmail.com">sistemapersonal.app@gmail.com</a></li></ul>
   </div>
@@ -803,6 +840,8 @@ footer a { color: inherit; overflow-wrap: anywhere; }
     medio("tarjeta"); $("pide").scrollIntoView({ behavior: "auto", block: "start" });
   });
   try { var gm0 = localStorage.getItem("sp_gmail"); if (gm0 && !$("correo").value) $("correo").value = gm0; } catch (x) {}
+  // Diseño 191: «Quiero mi acceso» de la puerta llega con el Gmail ya escrito
+  try { var gmU = (new URLSearchParams(location.search).get("gm") || "").trim().toLowerCase(); if (/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(gmU) && gmU.length <= 130) $("correo").value = gmU; } catch (x) {}
   $("tjIr").addEventListener("click", function (e) {
     var v = $("correo").value.trim().toLowerCase();
     if (!datos || !datos.tarjeta || !gmailOk(v)) { e.preventDefault(); return err("Escribe tu Gmail (el que usarás en la App)."); }
@@ -824,9 +863,9 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       $("enviar").disabled = false; boton();
       if (!r || !r.ok) return err((r && r.error) || "No pudimos enviar tu pedido. Intenta de nuevo.");
       $("vForm").classList.add("oculto"); $("vOk").classList.remove("oculto"); $("ck").setAttribute("data-paso", "3");
-      $("okNom").textContent = " · " + d.nombre.split(/\s+/)[0];
       $("okCorreo").textContent = r.correo || d.correo;
-      $("okPed").textContent = r.pedido ? "PEDIDO " + r.pedido : "TU PEDIDO";
+      $("okPed").textContent = r.pedido || "";
+      if (datos && datos.remitente) $("okRem").textContent = datos.remitente;
       var monto = r.monto ? (r.moneda || "S/") + " " + Number(r.monto).toFixed(2) : "";
       if (monto) $("okMonto").textContent = monto;
       if (r.qr && /^data:image\/(png|jpeg);base64,/.test(r.qr)) {
@@ -841,6 +880,32 @@ footer a { color: inherit; overflow-wrap: anywhere; }
       $("enviar").disabled = false; boton();
       err("No pudimos enviar tu pedido. Revisa tu conexión e intenta de nuevo.");
     }).WEB_pedir(d);
+  });
+  // Diseño 190: lo que responde «Consultar mi pedido»
+  var escH = function (x) { var e = document.createElement("span"); e.textContent = String(x === undefined || x === null ? "" : x); return e.innerHTML; };
+  var cRes = function (clase, sello, html) { $("cRes").innerHTML = '<div class="res ' + clase + '"><span class="sello">' + sello + "</span><div>" + html + "</div></div>"; };
+  $("okConsultar").addEventListener("click", function () { $("cPed").value = String($("okPed").textContent || ""); $("cGm").value = String($("okCorreo").textContent || ""); });
+  $("cForm").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var ped = $("cPed").value.trim().toUpperCase(), gm = $("cGm").value.trim().toLowerCase();
+    $("cRes").innerHTML = "";
+    if (!ped || !gm) { $("cErr").textContent = "Escribe tu número de pedido y tu Gmail."; return; }
+    $("cErr").textContent = ""; $("cIr").disabled = true; $("cIr").textContent = "Consultando…";
+    var fin = function () { $("cIr").disabled = false; $("cIr").textContent = "Consultar"; };
+    google.script.run.withSuccessHandler(function (r) {
+      fin();
+      if (!r || !r.ok) { $("cErr").textContent = (r && r.error) || "No pudimos consultar. Intenta de nuevo en un momento."; return; }
+      if (r.estado === "PENDIENTE") cRes("pendiente", "⏳ PENDIENTE", "Recibimos tu pedido" + (r.fecha ? " el <b>" + escH(r.fecha) + (r.hora ? " a las " + escH(r.hora) : "") + "</b>" : "") + ". Aún estamos confirmando tu pago. Te escribiremos a <b>" + escH(gm) + "</b> apenas lo confirmemos (8 a. m. a 10 p. m.).");
+      else if (r.estado === "ACTIVO") {
+        var ent = document.querySelector("a.e").getAttribute("href");
+        cRes("activo", "✓ ACTIVO", "Tu acceso está activo en <b>" + escH(gm) + "</b>" + (r.gen ? " (GEN " + escH(r.gen) + ")" : "") + ". Te mandamos el correo «¡Bienvenido(a) a SP!»: si no lo ves, revisa Spam.");
+        var a = document.createElement("a"); a.className = "btn"; a.id = "cEntrar"; a.textContent = "Entrar a mi App →"; a.target = "_top"; a.rel = "noopener";
+        a.href = ent + (ent.indexOf("?") >= 0 ? "&" : "?") + "gm=" + encodeURIComponent(gm);
+        $("cRes").firstChild.appendChild(a);
+      }
+      else if (r.estado === "REVISAR") cRes("revisar", "🔎 EN REVISIÓN", "Estamos revisando tu pago y te escribiremos hoy. No tienes que hacer nada.");
+      else cRes("no", "✕ NO ENCONTRADO", "No encontramos un pedido con esos datos. Revisa el número y el Gmail, o escríbenos a <b>" + escH(correoC()) + "</b>.");
+    }).withFailureHandler(function () { fin(); $("cErr").textContent = "No pudimos consultar. Revisa tu conexión e intenta de nuevo."; }).WEB_consultar({ ped: ped, correo: gm });
   });
 })();
 </script>
