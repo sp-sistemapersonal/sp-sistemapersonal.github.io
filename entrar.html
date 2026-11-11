@@ -111,7 +111,7 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
   var APP = "", BASE = "", GM = "";
   var $ = function (id) { return document.getElementById(id); };
   var valido = function (e) { return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(e); };
-  var CONTACTO = "sistemapersonal.app@gmail.com";
+  var CONTACTO = "hola@sistemapersonal.com";
   // El link de esta página con el Gmail ya puesto
   var linkDe = function (e) { return (BASE ? BASE + "?p=app" : location.href.split("?")[0]) + (valido(e) ? (BASE ? "&" : "?") + "gm=" + encodeURIComponent(e) : ""); };
   // Gmail: el del link (?gm=…, desde el correo o WhatsApp) o el que se recordó en este celular
@@ -170,7 +170,7 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 </script>
 
 <script>(function () { var WEB = "https://script.google.com/macros/s/AKfycbyDY7e6pd_-rVcpRUT7Uzsd-2z3gxoo5sZZxbMxWU5VzJvTRqtM34zCwa3QulXBTQ_jfA/exec";
-  var falla = function () { var e = document.getElementById("err"); if (e) e.textContent = "No pudimos abrir la App. Recarga la página o escríbenos por WhatsApp."; };
+  var falla = function () { var e = document.getElementById("err"); if (e) e.textContent = "No pudimos abrir la App. Recarga la página o escríbenos a hola@sistemapersonal.com."; };
   fetch(WEB + "?api=datos", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (d) {
     if (d && d.contacto && window.SP_ponerContacto) window.SP_ponerContacto(d.contacto);
     if (d && /^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(d.app || "") && window.SP_ponerApp) window.SP_ponerApp(d.app); else falla();
